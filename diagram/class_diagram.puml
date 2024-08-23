@@ -1,0 +1,84 @@
+@startuml
+
+class UserAccount {
+-String userId
+-String name
+-String email
+-String password
+-Wallet wallet
+-List<Transaction> transactionHistory
++register()
++login()
++logout()
+}
+
+class Wallet {
+-BigDecimal fiatBalance
+-Map<CryptoCurrency, BigDecimal> cryptoBalances
++depositFiat()
++withdrawFiat()
++viewBalance()
+}
+
+class CryptoCurrency {
+-String cryptoId
+-String symbol
+-BigDecimal marketPrice
++updateMarketPrice()
++getMarketPrice()
+}
+
+class Transaction {
+-String transactionId
+-CryptoCurrency cryptoCurrency
+-BigDecimal amount
+-BigDecimal price
+-TransactionType type
+-timeStamp date
++createTransaction()
++viewTransactionHistory()
+}
+
+abstract class Order {
+-String orderId
+-CryptoCurrency cryptoCurrency
+-BigDecimal amount
+-timeStamp date
++placeOrder()
++cancelOrder()
+}
+
+class BuyOrder {
+-BigDecimal maxPrice
++placeOrder()
+}
+
+class SellOrder{
+-BigDecimal minPrice
++placeOrder()
+}
+
+class Market{
+-List<Order> Orders
++matchOrders()
++priceFluctuation()
+}
+
+class Exchange{
+-Map<CryptoCurrency, price> marketPrices
++initializeCryptoCurrencies()
++updateCryptoCurrencies()
+}
+
+enum TransactionType {
+BUY
+SELL
+}
+
+UserAccount "1" *-- "1" Wallet
+UserAccount "1" *-- "0..*" Transaction
+Transaction "1" *-- "1" CryptoCurrency
+Order <|-- BuyOrder
+Order <|-- SellOrder
+
+@enduml
