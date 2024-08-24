@@ -1,31 +1,37 @@
 @startuml
 
-class UserAccount {
+class User {
 -String userId
 -String name
 -String email
 -String password
 -Wallet wallet
--List<Transaction> transactionHistory
-+register()
-+login()
+-TransactionService transactionService
++register(String name, String email, String password)
++login(String email, String password)
 +logout()
+}
+
+class UserRepository {
+  -Map<String, User> users
+  +save(User user)
+  +authenticate(String email, String password): User
 }
 
 class Wallet {
 -BigDecimal fiatBalance
 -Map<CryptoCurrency, BigDecimal> cryptoBalances
-+depositFiat()
-+withdrawFiat()
++depositFiat(BigDecimal amount)
++withdrawFiat(BigDecimal amount)
 +viewBalance()
 }
 
 class CryptoCurrency {
--String cryptoId
 -String symbol
+-String name
 -BigDecimal marketPrice
 +updateMarketPrice()
-+getMarketPrice()
++BigDecimal getMarketPrice()
 }
 
 class Transaction {
@@ -34,17 +40,24 @@ class Transaction {
 -BigDecimal amount
 -BigDecimal price
 -TransactionType type
--timeStamp date
+-LocalDateTime timestamp
 +createTransaction()
 +viewTransactionHistory()
+}
+
+class TransactionService {
+  -List<Transaction> transactions
+  +createTransaction()
+  +getTransactionHistory(): List<Transaction>
 }
 
 abstract class Order {
 -String orderId
 -CryptoCurrency cryptoCurrency
 -BigDecimal amount
--timeStamp date
+-LocalDateTime timestamp
 +placeOrder()
++executeOrder()
 +cancelOrder()
 }
 
@@ -59,7 +72,7 @@ class SellOrder{
 }
 
 class Market{
--List<Order> Orders
+-List<Order> orderBook
 +matchOrders()
 +priceFluctuation()
 }
@@ -70,15 +83,24 @@ class Exchange{
 +updateCryptoCurrencies()
 }
 
+
 enum TransactionType {
 BUY
 SELL
 }
 
-UserAccount "1" *-- "1" Wallet
-UserAccount "1" *-- "0..*" Transaction
+User "1" *-- "1" Wallet : contains
+User "1" --> "0..*" Order : Places Order
+User "1" *--> "1" TransactionService : Uses
+UserRepository "1" *-- "0..*" User : Stores
+User "1" --> "1" UserRepository : Registers/Logs in
+TransactionService "1" *-- "0..*" Transaction
 Transaction "1" *-- "1" CryptoCurrency
 Order <|-- BuyOrder
 Order <|-- SellOrder
+Order "1" *--> "1" Transaction
+Market "1" o-- "0..*" Order
+Exchange "1" o-- "0..*" CryptoCurrency
+Wallet "1" *-- "0..*" Transaction : Records
 
 @enduml
