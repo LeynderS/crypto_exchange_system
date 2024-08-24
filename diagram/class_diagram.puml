@@ -1,5 +1,11 @@
 @startuml
 
+class InMemoryUserRepository {
+  -Map<String, User> users
+  +save(User user)
+  +authenticate(String email, String password): User
+}
+
 class User {
 -String userId
 -String name
@@ -12,26 +18,24 @@ class User {
 +logout()
 }
 
-class UserRepository {
-  -Map<String, User> users
-  +save(User user)
-  +authenticate(String email, String password): User
-}
 
 class Wallet {
 -BigDecimal fiatBalance
 -Map<CryptoCurrency, BigDecimal> cryptoBalances
 +depositFiat(BigDecimal amount)
 +withdrawFiat(BigDecimal amount)
++depositCrypto(CryptoCurrency cryptoCurrency, BigDecimal amount)
++withdrawCrypto(CryptoCurrency cryptoCurrency, BigDecimal amount)
 +viewBalance()
 }
 
-class CryptoCurrency {
--String symbol
--String name
--BigDecimal marketPrice
-+updateMarketPrice()
-+BigDecimal getMarketPrice()
+interface TransactionRepository {
+void save(Transaction transaction)
+List<Transaction> getTransactionHistoryByUser(User user)
+}
+
+class InMemoryTransactionRepository {
+  -Map<String, List<Transaction>> transactions
 }
 
 class Transaction {
@@ -50,6 +54,17 @@ class TransactionService {
   +createTransaction()
   +getTransactionHistory(): List<Transaction>
 }
+
+
+class CryptoCurrency {
+-String symbol
+-String name
+-BigDecimal marketPrice
++updateMarketPrice()
++BigDecimal getMarketPrice()
+}
+
+
 
 abstract class Order {
 -String orderId
@@ -91,9 +106,10 @@ SELL
 
 User "1" *-- "1" Wallet : contains
 User "1" --> "0..*" Order : Places Order
+TransactionRepository <|-- InMemoryTransactionRepository
 User "1" *--> "1" TransactionService : Uses
-UserRepository "1" *-- "0..*" User : Stores
-User "1" --> "1" UserRepository : Registers/Logs in
+InMemoryUserRepository "1" *-- "0..*" User : Stores
+User "1" --> "1" InMemoryUserRepository : Registers/Logs in
 TransactionService "1" *-- "0..*" Transaction
 Transaction "1" *-- "1" CryptoCurrency
 Order <|-- BuyOrder

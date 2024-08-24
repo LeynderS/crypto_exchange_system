@@ -20,4 +20,8 @@ public class CryptoCurrency {
     public BigDecimal getMarketPrice() {
         return this.marketPrice;
     }
+
+    public String getSymbol() {
+        return this.symbol;
+    }
 }

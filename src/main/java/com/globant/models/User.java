@@ -15,10 +15,6 @@ public class User {
         this.wallet = new Wallet();
     }
 
-    public String getName() {
-        return name;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -26,4 +22,5 @@ public class User {
     public String getPassword() {
         return password;
     }
+
 }

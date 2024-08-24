@@ -25,4 +25,32 @@ public class Wallet {
         }
     }
 
+    public void depositCrypto(CryptoCurrency cryptoCurrency, BigDecimal amount) {
+        if(cryptoBalances.containsKey(cryptoCurrency)){
+            cryptoBalances.put(cryptoCurrency, cryptoBalances.get(cryptoCurrency).add(amount));
+        } else{
+            cryptoBalances.put(cryptoCurrency, amount);
+        }
+    }
+
+    public void withdrawCrypto(CryptoCurrency cryptoCurrency, BigDecimal amount) {
+        if(cryptoBalances.containsKey(cryptoCurrency) && cryptoBalances.get(cryptoCurrency).compareTo(amount) >= 0){
+            cryptoBalances.put(cryptoCurrency, cryptoBalances.get(cryptoCurrency).subtract(amount));
+        } else{
+            throw new InsufficientFundsException();
+        }
+    }
+
+    /**
+     * Returns the balance of the wallet in a human-readable format
+     * @return a string with the balance of the wallet
+     */
+    public String viewBalance() {
+        StringBuilder balance = new StringBuilder("Fiat balance: ").append(fiatBalance).append("\nCrypto Balances:\n");
+        cryptoBalances.forEach((crypto, amount) ->
+                balance.append(crypto.getSymbol()).append(": ").append(amount).append("\n")
+        );
+        return balance.toString();
+    }
+
 }
