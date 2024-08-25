@@ -1,9 +1,23 @@
 @startuml
 
+class UserService{
+-final InMemoryUserRepository userRepository
+-static final String EMAIL_REGEX
+-static final Pattern EMAIL_PATTERN
+-User currentUser
++registerUser(String name, String email, String password)
++login(String email, String password)
++logout()
++validateEmail(String email)
++emailInUse(String email)
++getCurrentUser(): User
++isLoggedIn(): boolean
+}
+
 class InMemoryUserRepository {
   -Map<String, User> users
   +save(User user)
-  +authenticate(String email, String password): User
+  +getUserByEmail(String email): User
 }
 
 class User {
@@ -12,10 +26,9 @@ class User {
 -String email
 -String password
 -Wallet wallet
--TransactionService transactionService
-+register(String name, String email, String password)
-+login(String email, String password)
-+logout()
++getEmail(): String
++getPassword(): String
++getName(): String
 }
 
 
@@ -26,8 +39,28 @@ class Wallet {
 +withdrawFiat(BigDecimal amount)
 +depositCrypto(CryptoCurrency cryptoCurrency, BigDecimal amount)
 +withdrawCrypto(CryptoCurrency cryptoCurrency, BigDecimal amount)
-+viewBalance()
++viewBalance(): String
 }
+
+abstract class Order {
+-String orderId
+-CryptoCurrency cryptoCurrency
+-BigDecimal amount
+-LocalDateTime timestamp
+-OrderStatus status
++placeOrder()
++executeOrder()
++cancelOrder()
+}
+
+class BuyOrder {
+-BigDecimal maxPrice
+}
+
+class SellOrder{
+-BigDecimal minPrice
+}
+
 
 interface TransactionRepository {
 void save(Transaction transaction)
@@ -65,27 +98,6 @@ class CryptoCurrency {
 }
 
 
-
-abstract class Order {
--String orderId
--CryptoCurrency cryptoCurrency
--BigDecimal amount
--LocalDateTime timestamp
-+placeOrder()
-+executeOrder()
-+cancelOrder()
-}
-
-class BuyOrder {
--BigDecimal maxPrice
-+placeOrder()
-}
-
-class SellOrder{
--BigDecimal minPrice
-+placeOrder()
-}
-
 class Market{
 -List<Order> orderBook
 +matchOrders()
@@ -104,19 +116,19 @@ BUY
 SELL
 }
 
-User "1" *-- "1" Wallet : contains
-User "1" --> "0..*" Order : Places Order
-TransactionRepository <|-- InMemoryTransactionRepository
-User "1" *--> "1" TransactionService : Uses
+UserService "1" --> "1" InMemoryUserRepository : Uses
 InMemoryUserRepository "1" *-- "0..*" User : Stores
-User "1" --> "1" InMemoryUserRepository : Registers/Logs in
+User "1" *-- "1" Wallet : contains
+
+User "1" --> "0..*" Order : Places Order
+
+TransactionRepository <|-- InMemoryTransactionRepository
+
 TransactionService "1" *-- "0..*" Transaction
 Transaction "1" *-- "1" CryptoCurrency
 Order <|-- BuyOrder
 Order <|-- SellOrder
-Order "1" *--> "1" Transaction
 Market "1" o-- "0..*" Order
 Exchange "1" o-- "0..*" CryptoCurrency
-Wallet "1" *-- "0..*" Transaction : Records
 
 @enduml

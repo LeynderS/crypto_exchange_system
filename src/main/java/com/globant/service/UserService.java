@@ -16,31 +16,48 @@ public class UserService {
     }
 
     public void registerUser(String name, String email, String password) {
-        validateEmail(email);
-        if(userRepository.getUserByEmail(email) != null){
-            throw new EmailInUseException();
-        }
         User user = new User(name, email, password);
+        currentUser = user;
         userRepository.save(user);
     }
 
-    public User login(String email, String password) {
-        User user = userRepository.getUserByEmail(email);
-        if (user.getPassword().equals(password)) {
-            currentUser = user;
-            return user;
-        } else {
+    public void login(String email, String password) {
+        try{
+            User user = userRepository.getUserByEmail(email);
+            if (user.getPassword().equals(password)) currentUser = user;
+            else throw new InvalidCredentialsException();
+        }catch (UserNotFoundException e){
             throw new InvalidCredentialsException();
         }
     }
 
-    public void logout(User user){
+    public void logout(){
         if (currentUser != null) currentUser = null;
     }
 
+    /**
+     * Validates that the email is in the correct format
+     * @param email the email to validate
+     */
     public void validateEmail(String email) {
         if (!EMAIL_PATTERN.matcher(email).matches()) {
-            throw new InvalidCredentialsException();
+            throw new InvalidEmailException();
         }
+    }
+
+    public void emailInUse(String email){
+        try{
+            userRepository.getUserByEmail(email);
+            throw new EmailInUseException();
+        }catch (UserNotFoundException e){
+            // Do nothing
+        }
+    }
+    public User getCurrentUser() {
+        return currentUser;
+    }
+
+    public boolean isLoggedIn(){
+        return currentUser != null;
     }
 }

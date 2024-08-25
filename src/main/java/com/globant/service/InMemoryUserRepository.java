@@ -7,7 +7,7 @@ import java.util.Optional;
 import com.globant.models.User;
 
 public class InMemoryUserRepository {
-    private Map<String, User> users = new HashMap<>();
+    private final Map<String, User> users = new HashMap<>();
 
     /**
      * Saves a user in the repository
