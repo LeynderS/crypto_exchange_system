@@ -1,26 +1,37 @@
 package com.globant.controllers;
 
 import com.globant.service.UserService;
+import com.globant.service.WalletService;
 import com.globant.views.ConsoleView;
 
 class UserOperationsController {
     private final ConsoleView view;
     private final UserService userService;
+    private WalletService walletService;
+    private DepositController depositController;
+    private CheckWalletController checkWalletController;
 
     public UserOperationsController(ConsoleView view, UserService userService) {
         this.view = view;
         this.userService = userService;
     }
 
+    private void updateUserSession(){
+        this.walletService = new WalletService(userService.getCurrentUser().getWallet());
+        this.depositController = new DepositController(view, walletService);
+        this.checkWalletController = new CheckWalletController(view, walletService);
+    }
+
     public void execute(){
+        updateUserSession();
         while(true){
             int choice = view.getUserOperationsChoice(userService.getCurrentUser().getName());
             switch (choice){
                 case 1:
-                    view.showSuccessMessage("Depositing Fiat Money");
+                    depositController.execute();
                     break;
                 case 2:
-                    view.showSuccessMessage("Checking Wallet Balances");
+                    checkWalletController.execute();
                     break;
                 case 3:
                     view.showSuccessMessage("Buying Crypto From Exchange");

@@ -26,4 +26,8 @@ public class User {
     public String getName() {
         return name;
     }
+
+    public Wallet getWallet() {
+        return wallet;
+    }
 }

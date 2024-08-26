@@ -1,5 +1,7 @@
 package com.globant.views;
 
+import java.math.BigDecimal;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ConsoleView {
@@ -11,6 +13,7 @@ public class ConsoleView {
     private final Scanner scanner = new Scanner(System.in);
     private static final int INVALID_CHOICE = -1;
 
+    // All about Login/Sigup
     public int getChoice(){
         System.out.println("Choose an option to continue:");
         System.out.println("1. LogIn");
@@ -42,8 +45,10 @@ public class ConsoleView {
         System.out.println("Confirm your password:");
         return scanner.nextLine();
     }
+
+    // All about User Operations
     public int getUserOperationsChoice(String name) {
-        System.out.printf("Welcome %s to the CryptoCurrency Exchange", name);
+        System.out.printf("Welcome %s to the CryptoCurrency Exchange\n", name);
         System.out.println("1. Deposit Fiat Money");
         System.out.println("2. Checking Wallet Balances");
         System.out.println("3. Buy Crypto From Exchange");
@@ -57,6 +62,23 @@ public class ConsoleView {
             return Integer.parseInt(choice);
         } catch (NumberFormatException e) {
             return INVALID_CHOICE;
+        }
+    }
+
+    // All about Wallet
+    public BigDecimal getFiatAmount() {
+        System.out.println("Enter the amount:");
+        try {
+            BigDecimal amount = scanner.nextBigDecimal();
+            if (amount.compareTo(BigDecimal.ZERO) < 0) {
+                throw new InputMismatchException();
+            }
+            scanner.nextLine();
+            return amount;
+        } catch (InputMismatchException e) {
+            showError("Invalid amount. Please try again.");
+            scanner.nextLine();
+            return getFiatAmount();
         }
     }
 

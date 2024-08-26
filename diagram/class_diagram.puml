@@ -31,6 +31,14 @@ class User {
 +getName(): String
 }
 
+class WalletService{
+-Wallet wallet
++depositFiat(BigDecimal amount)
++withdrawFiat(BigDecimal amount)
++depositCrypto(CryptoCurrency cryptoCurrency, BigDecimal amount)
++withdrawCrypto(CryptoCurrency cryptoCurrency, BigDecimal amount)
++viewBalance(): String
+}
 
 class Wallet {
 -BigDecimal fiatBalance
@@ -119,6 +127,7 @@ SELL
 UserService "1" --> "1" InMemoryUserRepository : Uses
 InMemoryUserRepository "1" *-- "0..*" User : Stores
 User "1" *-- "1" Wallet : contains
+Wallet "1" <-- "1" WalletService : Uses
 
 User "1" --> "0..*" Order : Places Order
 
