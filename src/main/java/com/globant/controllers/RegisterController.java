@@ -1,9 +1,9 @@
 package com.globant.controllers;
 
-import com.globant.service.EmailInUseException;
+import com.globant.exceptions.EmailInUseException;
 import com.globant.service.UserService;
 import com.globant.views.ConsoleView;
-import com.globant.service.InvalidEmailException;
+import com.globant.exceptions.InvalidEmailException;
 
 class RegisterController {
     private final ConsoleView view;

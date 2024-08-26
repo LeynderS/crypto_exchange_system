@@ -1,5 +1,6 @@
 package com.globant.controllers;
 
+import com.globant.service.SystemExchangeService;
 import com.globant.service.UserService;
 import com.globant.service.WalletService;
 import com.globant.views.ConsoleView;
@@ -10,16 +11,19 @@ class UserOperationsController {
     private WalletService walletService;
     private DepositController depositController;
     private CheckWalletController checkWalletController;
+    private BuyExchangeController buyExchangeController;
 
-    public UserOperationsController(ConsoleView view, UserService userService) {
+    public UserOperationsController(ConsoleView view, UserService userService, SystemExchangeService systemExchangeService) {
         this.view = view;
         this.userService = userService;
+        this.walletService = new WalletService();
+        this.depositController = new DepositController(view, walletService);
+        this.checkWalletController = new CheckWalletController(view, walletService);
+        this.buyExchangeController = new BuyExchangeController(view, walletService, systemExchangeService);
     }
 
     private void updateUserSession(){
-        this.walletService = new WalletService(userService.getCurrentUser().getWallet());
-        this.depositController = new DepositController(view, walletService);
-        this.checkWalletController = new CheckWalletController(view, walletService);
+        walletService.setWallet(userService.getCurrentUser().getWallet());
     }
 
     public void execute(){
@@ -34,7 +38,7 @@ class UserOperationsController {
                     checkWalletController.execute();
                     break;
                 case 3:
-                    view.showSuccessMessage("Buying Crypto From Exchange");
+                    buyExchangeController.execute();
                     break;
                 case 4:
                     view.showSuccessMessage("Placing Buy Order");

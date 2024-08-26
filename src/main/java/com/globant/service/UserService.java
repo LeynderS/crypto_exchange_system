@@ -1,6 +1,11 @@
 package com.globant.service;
 
+import com.globant.exceptions.EmailInUseException;
+import com.globant.exceptions.InvalidCredentialsException;
+import com.globant.exceptions.InvalidEmailException;
+import com.globant.exceptions.UserNotFoundException;
 import com.globant.models.User;
+import com.globant.repositories.InMemoryUserRepository;
 
 import java.util.regex.Pattern;
 

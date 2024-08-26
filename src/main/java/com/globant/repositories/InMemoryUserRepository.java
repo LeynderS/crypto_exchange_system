@@ -1,9 +1,10 @@
-package com.globant.service;
+package com.globant.repositories;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import com.globant.exceptions.UserNotFoundException;
 import com.globant.models.User;
 
 public class InMemoryUserRepository {

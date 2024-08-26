@@ -8,10 +8,6 @@ import java.math.BigDecimal;
 public class WalletService {
     private Wallet wallet;
 
-    public WalletService(Wallet wallet) {
-        this.wallet = wallet;
-    }
-
     public void depositFiat(BigDecimal amount) {
         wallet.depositFiat(amount);
     }
@@ -30,5 +26,9 @@ public class WalletService {
 
     public String viewBalance() {
         return wallet.viewBalance();
+    }
+
+    public void setWallet(Wallet wallet) {
+        this.wallet = wallet;
     }
 }

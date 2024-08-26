@@ -14,7 +14,7 @@ class DepositController {
     }
 
     public void execute(){
-        BigDecimal amount = view.getFiatAmount();
+        BigDecimal amount = view.getAmount();
         walletService.depositFiat(amount);
         view.showSuccessMessage("Deposit successful");
     }

@@ -66,7 +66,7 @@ public class ConsoleView {
     }
 
     // All about Wallet
-    public BigDecimal getFiatAmount() {
+    public BigDecimal getAmount() {
         System.out.println("Enter the amount:");
         try {
             BigDecimal amount = scanner.nextBigDecimal();
@@ -78,8 +78,13 @@ public class ConsoleView {
         } catch (InputMismatchException e) {
             showError("Invalid amount. Please try again.");
             scanner.nextLine();
-            return getFiatAmount();
+            return getAmount();
         }
+    }
+
+    public String getCryptoCurrencySymbol() {
+        System.out.println("Enter the symbol of the cryptocurrency:");
+        return scanner.nextLine();
     }
 
     public void showError(String errorMessage) {

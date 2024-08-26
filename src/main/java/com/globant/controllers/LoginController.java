@@ -1,7 +1,7 @@
 package com.globant.controllers;
 
-import com.globant.service.InvalidCredentialsException;
-import com.globant.service.InvalidEmailException;
+import com.globant.exceptions.InvalidCredentialsException;
+import com.globant.exceptions.InvalidEmailException;
 import com.globant.service.UserService;
 import com.globant.views.ConsoleView;
  class LoginController {

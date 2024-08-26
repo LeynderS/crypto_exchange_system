@@ -5,23 +5,18 @@ import java.math.BigDecimal;
 public class CryptoCurrency {
     String symbol;
     String name;
-    BigDecimal marketPrice;
 
-    public CryptoCurrency(String symbol, String name, BigDecimal marketPrice) {
+    public CryptoCurrency(String symbol, String name) {
         this.symbol = symbol;
         this.name = name;
-        this.marketPrice = marketPrice;
-    }
-
-    public void updateMarketPrice(BigDecimal newPrice) {
-        this.marketPrice = newPrice;
-    }
-
-    public BigDecimal getMarketPrice() {
-        return this.marketPrice;
     }
 
     public String getSymbol() {
-        return this.symbol;
+        return symbol;
+    }
+
+    @Override
+    public String toString() {
+        return symbol + " - " + name + "\n";
     }
 }

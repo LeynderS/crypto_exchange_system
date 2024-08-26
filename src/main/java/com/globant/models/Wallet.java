@@ -1,5 +1,7 @@
 package com.globant.models;
 
+import com.globant.exceptions.InsufficientFundsException;
+
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +23,7 @@ public class Wallet {
         if(fiatBalance.compareTo(amount) >= 0){
             fiatBalance = fiatBalance.subtract(amount);
         } else{
-            throw new InsufficientFundsException();
+            throw new InsufficientFundsException("Insufficient funds in your wallet");
         }
     }
 
@@ -37,7 +39,7 @@ public class Wallet {
         if(cryptoBalances.containsKey(cryptoCurrency) && cryptoBalances.get(cryptoCurrency).compareTo(amount) >= 0){
             cryptoBalances.put(cryptoCurrency, cryptoBalances.get(cryptoCurrency).subtract(amount));
         } else{
-            throw new InsufficientFundsException();
+            throw new InsufficientFundsException("Insufficient cryptos in your wallet");
         }
     }
 

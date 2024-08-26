@@ -50,6 +50,20 @@ class Wallet {
 +viewBalance(): String
 }
 
+class CryptoCurrencyRepository{
+getCryptoCurrencyBySymbol(String symbol): CryptoCurrency
+}
+
+class SystemExchangeService{
+-CryptoCurrencyRepository cryptoCurrencyRepository
+-final Map<CryptoCurrency, BigDecimal> cryptosMarketPrice
+-final Map<CryptoCurrency, BigDecimal> cryptosAvailability
++sufficientCryptos(String symbol, (BigDecimal amount)
++getTotalPrice(String symbol, BigDecimal amount): BigDecimal
++buyCryptoCurrency(String symbol, BigDecimal amount): CryptoCurrency
++getAvailableCryptosAndMarketPrice(): BigDecimal
+}
+
 abstract class Order {
 -String orderId
 -CryptoCurrency cryptoCurrency
@@ -101,8 +115,9 @@ class CryptoCurrency {
 -String symbol
 -String name
 -BigDecimal marketPrice
+-BigDecimal exchangeAvailability
 +updateMarketPrice()
-+BigDecimal getMarketPrice()
++updateExchangeAvailability()
 }
 
 
@@ -112,9 +127,8 @@ class Market{
 +priceFluctuation()
 }
 
-class Exchange{
--Map<CryptoCurrency, price> marketPrices
-+initializeCryptoCurrencies()
+class SystemExchangeService{
+-Map<String, CryptoCurrency> cryptosExchange
 +updateCryptoCurrencies()
 }
 
@@ -128,6 +142,8 @@ UserService "1" --> "1" InMemoryUserRepository : Uses
 InMemoryUserRepository "1" *-- "0..*" User : Stores
 User "1" *-- "1" Wallet : contains
 Wallet "1" <-- "1" WalletService : Uses
+CryptoCurrencyRepository --> CryptoCurrency : provides
+SystemExchangeService --> CryptoCurrencyRepository : uses
 
 User "1" --> "0..*" Order : Places Order
 
@@ -138,6 +154,5 @@ Transaction "1" *-- "1" CryptoCurrency
 Order <|-- BuyOrder
 Order <|-- SellOrder
 Market "1" o-- "0..*" Order
-Exchange "1" o-- "0..*" CryptoCurrency
 
 @enduml
