@@ -9,7 +9,7 @@ import com.globant.views.ConsoleView;
 
 import java.math.BigDecimal;
 
-public class BuyExchangeController {
+class BuyExchangeController {
     private final ConsoleView view;
     private final SystemExchangeService systemExchangeService;
     private final WalletService walletService;
@@ -23,8 +23,8 @@ public class BuyExchangeController {
         view.showInfo(systemExchangeService.getAvailableCryptosAndMarketPrice());
         try{
             String symbol = view.getCryptoCurrencySymbol();
-            BigDecimal amount = view.getAmount();
-            systemExchangeService.sufficientCryptos(symbol, amount);
+            BigDecimal amount = view.getAmount("Enter the amount of Crypto:");
+            systemExchangeService.sufficientCryptosInExchangeVal(symbol, amount);
             walletService.withdrawFiat(systemExchangeService.getTotalPrice(symbol, amount));
             CryptoCurrency cryptoCurrency = systemExchangeService.buyCryptoCurrency(symbol, amount);
             walletService.depositCrypto(cryptoCurrency, amount);

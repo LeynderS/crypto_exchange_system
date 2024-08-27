@@ -11,12 +11,8 @@ public class CryptoCurrency {
         this.name = name;
     }
 
-    public String getSymbol() {
-        return symbol;
-    }
-
     @Override
     public String toString() {
-        return symbol + " - " + name + "\n";
+        return symbol + " - " + name;
     }
 }

@@ -5,25 +5,9 @@ import java.math.BigDecimal;
 public class BuyOrder extends Order{
     private BigDecimal maxPrice;
 
-    public BuyOrder(CryptoCurrency cryptoCurrency, BigDecimal amount, BigDecimal maxPrice) {
-        super(cryptoCurrency, amount);
+    public BuyOrder(CryptoCurrency cryptoCurrency, BigDecimal amount, User user,BigDecimal maxPrice) {
+        super(cryptoCurrency, amount, user);
         this.maxPrice = maxPrice;
-    }
-
-
-    @Override
-    public void placeOrder() {
-
-    }
-
-    @Override
-    public void executeOrder() {
-
-    }
-
-    @Override
-    public void cancelOrder() {
-
     }
 
     @Override

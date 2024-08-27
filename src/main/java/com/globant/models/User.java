@@ -30,4 +30,9 @@ public class User {
     public Wallet getWallet() {
         return wallet;
     }
+
+    @Override
+    public String toString(){
+        return name;
+    }
 }
