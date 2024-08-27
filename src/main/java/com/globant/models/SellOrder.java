@@ -9,7 +9,9 @@ public class SellOrder extends Order{
         super(cryptoCurrency, amount, user);
         this.minPrice = minPrice;
     }
-
+    public BigDecimal getMinPrice() {
+        return minPrice;
+    }
     @Override
     public String toString() {
         return super.toString() + "\nminPrice=" + minPrice;

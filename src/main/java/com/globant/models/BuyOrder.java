@@ -10,6 +10,9 @@ public class BuyOrder extends Order{
         this.maxPrice = maxPrice;
     }
 
+    public BigDecimal getMaxPrice() {
+        return maxPrice;
+    }
     @Override
     public String toString() {
         return super.toString() + "\nmaxPrice=" + maxPrice;

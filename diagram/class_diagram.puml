@@ -58,7 +58,7 @@ class SystemExchangeService{
 -CryptoCurrencyRepository cryptoCurrencyRepository
 -final Map<CryptoCurrency, BigDecimal> cryptosMarketPrice
 -final Map<CryptoCurrency, BigDecimal> cryptosAvailability
-+sufficientCryptos(String symbol, (BigDecimal amount)
++sufficientCryptos(String symbol, BigDecimal amount)
 +getTotalPrice(String symbol, BigDecimal amount): BigDecimal
 +buyCryptoCurrency(String symbol, BigDecimal amount): CryptoCurrency
 +getAvailableCryptosAndMarketPrice(): BigDecimal
@@ -81,10 +81,16 @@ class SellOrder{
 }
 
 class OrderBook{
+-static OrderBook instance
 -List<Order> buyOrders
 -List<Order> sellOrders
++static OrderBook getInstance()
 +addOrder(Order order)
-+matchOrders()
+-matchOrders()
+-findMatchingOrders(): Order[]
+-ordersMatch(Order buyOrder, Order sellOrder): boolean
+-processTransaction(Order buyOrder, Order sellOrder)
+-removeMatchedOrders(Order buyOrder, Order sellOrder)
 }
 
 
@@ -118,17 +124,7 @@ class TransactionService {
 class CryptoCurrency {
 -String symbol
 -String name
--BigDecimal marketPrice
--BigDecimal exchangeAvailability
-+updateMarketPrice()
-+updateExchangeAvailability()
 }
-
-class SystemExchangeService{
--Map<String, CryptoCurrency> cryptosExchange
-+updateCryptoCurrencies()
-}
-
 
 enum TransactionType {
 BUY

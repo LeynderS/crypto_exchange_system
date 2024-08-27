@@ -22,7 +22,7 @@ class BuyExchangeController {
     public void execute() {
         view.showInfo(systemExchangeService.getAvailableCryptosAndMarketPrice());
         try{
-            String symbol = view.getCryptoCurrencySymbol();
+            String symbol = view.getCryptoCurrencySymbol().toUpperCase();
             BigDecimal amount = view.getAmount("Enter the amount of Crypto:");
             systemExchangeService.sufficientCryptosInExchangeVal(symbol, amount);
             walletService.withdrawFiat(systemExchangeService.getTotalPrice(symbol, amount));

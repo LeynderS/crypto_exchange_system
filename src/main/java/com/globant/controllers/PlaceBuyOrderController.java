@@ -29,13 +29,15 @@ class PlaceBuyOrderController {
 
     public void execute(){
         view.showInfo(systemExchangeService.getAvailableCryptosAndMarketPrice());
-        String crypto = view.getCryptoCurrencySymbol();
+        String crypto = view.getCryptoCurrencySymbol().toUpperCase();
         try{
             CryptoCurrency cryptoCurrency = systemExchangeService.getCryptoCurrencyBySymbol(crypto);
             BigDecimal amount = view.getAmount("Enter the amount of Crypto:");
             BigDecimal maxPrice = view.getAmount("Enter the maximum price:");
             walletService.fiatFoundsValidation(maxPrice);
+            walletService.withdrawFiat(maxPrice);
             orderBook.addOrder(new BuyOrder(cryptoCurrency,amount,userService.getCurrentUser(),maxPrice));
+            view.showInfo("Buy Order placed successfully");
         }catch (UnknowCryptoCurrencyException e){
             view.showError("Unknown crypto currency. Please try again.");
         }catch (InsufficientFundsException e){

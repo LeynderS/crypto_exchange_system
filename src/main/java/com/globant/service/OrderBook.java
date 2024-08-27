@@ -1,9 +1,8 @@
 package com.globant.service;
 
-import com.globant.models.BuyOrder;
-import com.globant.models.Order;
-import com.globant.models.SellOrder;
+import com.globant.models.*;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,5 +29,57 @@ public class OrderBook {
             sellOrders.add(order);
             System.out.println(sellOrders.size());
         }
+        if(buyOrders.size() > 0 && sellOrders.size() > 0) matchOrders();
+    }
+
+    private void matchOrders(){
+        Order[] matchedOrders = findMatchingOrders();
+        if (matchedOrders != null){
+            processTransaction(matchedOrders[0], matchedOrders[1]);
+            removeMatchedOrders(matchedOrders[0], matchedOrders[1]);
+        }
+    }
+
+    private Order[] findMatchingOrders(){
+        for(Order buyOrder : buyOrders){
+            for(Order sellOrder : sellOrders){
+                if(ordersMatch(buyOrder, sellOrder)){
+                    return new Order[]{buyOrder, sellOrder};
+                }
+            }
+        }
+        return null;
+    }
+
+    private boolean ordersMatch(Order buyOrder, Order sellOrder){
+        if(!buyOrder.getCryptoCurrency().equals(sellOrder.getCryptoCurrency())){
+            return false;
+        }
+        if (buyOrder.getAmount().compareTo(sellOrder.getAmount()) != 0){
+            return false;
+        }
+        if (buyOrder.getUser().equals(sellOrder.getUser())){
+            return false;
+        }
+        BigDecimal maxPrice = ((BuyOrder) buyOrder).getMaxPrice();
+        BigDecimal minPrice = ((SellOrder) sellOrder).getMinPrice();
+        return maxPrice.compareTo(minPrice) >= 0;
+    }
+
+    private void processTransaction(Order buyOrder, Order sellOrder){
+        CryptoCurrency cryptoCurrency = buyOrder.getCryptoCurrency();
+        BigDecimal amount = buyOrder.getAmount();
+        BigDecimal maxPrice = ((BuyOrder) buyOrder).getMaxPrice();
+        BigDecimal minPrice = ((SellOrder) sellOrder).getMinPrice();
+        User buyer = buyOrder.getUser();
+        User seller = sellOrder.getUser();
+        buyer.getWallet().depositCrypto(cryptoCurrency, amount);
+        buyer.getWallet().depositFiat(maxPrice.subtract(minPrice));
+        seller.getWallet().depositFiat(minPrice);
+    }
+
+    private void removeMatchedOrders(Order buyOrder, Order sellOrder){
+        buyOrders.remove(buyOrder);
+        sellOrders.remove(sellOrder);
     }
 }
