@@ -44,7 +44,7 @@ public class Wallet {
     }
 
     public void cryptosFoundsValidation(CryptoCurrency cryptoCurrency, BigDecimal amount) {
-        if(cryptoBalances.containsKey(cryptoCurrency) && cryptoBalances.get(cryptoCurrency).compareTo(amount) < 0){
+        if(!cryptoBalances.containsKey(cryptoCurrency) || cryptoBalances.get(cryptoCurrency).compareTo(amount) < 0){
             throw new InsufficientFundsException("Insufficient cryptos in your wallet");
         }
     }

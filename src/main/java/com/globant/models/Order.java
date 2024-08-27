@@ -26,4 +26,14 @@ public abstract class Order {
                 "\namount=" + amount +
                 "\ndate=" + date;
     }
+
+    public User getUser() {
+        return user;
+    }
+    public CryptoCurrency getCryptoCurrency() {
+        return cryptoCurrency;
+    }
+    public BigDecimal getAmount() {
+        return amount;
+    }
 }

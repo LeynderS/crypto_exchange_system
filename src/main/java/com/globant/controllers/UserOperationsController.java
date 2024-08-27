@@ -23,6 +23,7 @@ class UserOperationsController {
         this.checkWalletController = new CheckWalletController(view, walletService);
         this.buyExchangeController = new BuyExchangeController(view, walletService, systemExchangeService);
         this.placeBuyOrderController = new PlaceBuyOrderController(view, userService, walletService, systemExchangeService);
+        this.placeSellOrderController = new PlaceSellOrderController(view, userService, walletService, systemExchangeService);
     }
 
     private void updateUserSession(){
@@ -47,7 +48,7 @@ class UserOperationsController {
                     placeBuyOrderController.execute();
                     break;
                 case 5:
-                    view.showSuccessMessage("Placing Sell Order");
+                    placeSellOrderController.execute();
                     break;
                 case 6:
                     view.showSuccessMessage("Checking Open Orders");
