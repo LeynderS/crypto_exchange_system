@@ -24,6 +24,14 @@ public class WalletService {
         wallet.withdrawCrypto(cryptoCurrency, amount);
     }
 
+    public void fiatFoundsValidation(BigDecimal amount) {
+        wallet.fiatFoundsValidation(amount);
+    }
+
+    public void cryptosFoundsValidation(CryptoCurrency cryptoCurrency, BigDecimal amount) {
+        wallet.cryptosFoundsValidation(cryptoCurrency, amount);
+    }
+
     public String viewBalance() {
         return wallet.viewBalance();
     }

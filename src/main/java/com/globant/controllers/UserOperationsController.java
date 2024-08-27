@@ -12,6 +12,8 @@ class UserOperationsController {
     private DepositController depositController;
     private CheckWalletController checkWalletController;
     private BuyExchangeController buyExchangeController;
+    private PlaceBuyOrderController placeBuyOrderController;
+    private PlaceSellOrderController placeSellOrderController;
 
     public UserOperationsController(ConsoleView view, UserService userService, SystemExchangeService systemExchangeService) {
         this.view = view;
@@ -20,6 +22,7 @@ class UserOperationsController {
         this.depositController = new DepositController(view, walletService);
         this.checkWalletController = new CheckWalletController(view, walletService);
         this.buyExchangeController = new BuyExchangeController(view, walletService, systemExchangeService);
+        this.placeBuyOrderController = new PlaceBuyOrderController(view, userService, walletService, systemExchangeService);
     }
 
     private void updateUserSession(){
@@ -41,7 +44,7 @@ class UserOperationsController {
                     buyExchangeController.execute();
                     break;
                 case 4:
-                    view.showSuccessMessage("Placing Buy Order");
+                    placeBuyOrderController.execute();
                     break;
                 case 5:
                     view.showSuccessMessage("Placing Sell Order");

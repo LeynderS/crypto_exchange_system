@@ -66,13 +66,10 @@ class SystemExchangeService{
 
 abstract class Order {
 -String orderId
+-User user
 -CryptoCurrency cryptoCurrency
 -BigDecimal amount
--LocalDateTime timestamp
--OrderStatus status
-+placeOrder()
-+executeOrder()
-+cancelOrder()
+-LocalDateTime date
 }
 
 class BuyOrder {
@@ -81,6 +78,13 @@ class BuyOrder {
 
 class SellOrder{
 -BigDecimal minPrice
+}
+
+class OrderBook{
+-List<Order> buyOrders
+-List<Order> sellOrders
++addOrder(Order order)
++matchOrders()
 }
 
 
@@ -120,13 +124,6 @@ class CryptoCurrency {
 +updateExchangeAvailability()
 }
 
-
-class Market{
--List<Order> orderBook
-+matchOrders()
-+priceFluctuation()
-}
-
 class SystemExchangeService{
 -Map<String, CryptoCurrency> cryptosExchange
 +updateCryptoCurrencies()
@@ -144,15 +141,14 @@ User "1" *-- "1" Wallet : contains
 Wallet "1" <-- "1" WalletService : Uses
 CryptoCurrencyRepository --> CryptoCurrency : provides
 SystemExchangeService --> CryptoCurrencyRepository : uses
-
-User "1" --> "0..*" Order : Places Order
+Order <|-- BuyOrder
+Order <|-- SellOrder
+OrderBook "1" *-- "0..*" Order : contains
 
 TransactionRepository <|-- InMemoryTransactionRepository
 
 TransactionService "1" *-- "0..*" Transaction
 Transaction "1" *-- "1" CryptoCurrency
-Order <|-- BuyOrder
-Order <|-- SellOrder
-Market "1" o-- "0..*" Order
+
 
 @enduml

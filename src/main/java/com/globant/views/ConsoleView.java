@@ -66,8 +66,8 @@ public class ConsoleView {
     }
 
     // All about Wallet
-    public BigDecimal getAmount() {
-        System.out.println("Enter the amount:");
+    public BigDecimal getAmount(String message) {
+        System.out.println(message);
         try {
             BigDecimal amount = scanner.nextBigDecimal();
             if (amount.compareTo(BigDecimal.ZERO) < 0) {
@@ -78,7 +78,7 @@ public class ConsoleView {
         } catch (InputMismatchException e) {
             showError("Invalid amount. Please try again.");
             scanner.nextLine();
-            return getAmount();
+            return getAmount(message);
         }
     }
 

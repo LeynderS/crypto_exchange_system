@@ -5,7 +5,7 @@ import com.globant.views.ConsoleView;
 
 import java.math.BigDecimal;
 
-public class CheckWalletController {
+class CheckWalletController {
     private final ConsoleView view;
     private final WalletService walletService;
     public CheckWalletController(ConsoleView view, WalletService walletService) {

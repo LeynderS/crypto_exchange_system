@@ -13,7 +13,6 @@ public class SystemExchangeService {
 
     private final CryptoCurrencyRepository cryptoCurrencyRepository;
     private final Map<CryptoCurrency, BigDecimal> cryptosMarketPrice = new HashMap<>();
-
     private final Map<CryptoCurrency, BigDecimal> cryptosAvailability = new HashMap<>();
 
     public SystemExchangeService(CryptoCurrencyRepository cryptoCurrencyRepository) {
@@ -24,7 +23,7 @@ public class SystemExchangeService {
         cryptosAvailability.put(cryptoCurrencyRepository.getCryptoCurrencyBySymbol("ETH"), new BigDecimal("500"));
     }
 
-    public void sufficientCryptos(String symbol, BigDecimal amount) {
+    public void sufficientCryptosInExchangeVal(String symbol, BigDecimal amount) {
         CryptoCurrency cryptoCurrency = cryptoCurrencyRepository.getCryptoCurrencyBySymbol(symbol);
         BigDecimal available = cryptosAvailability.get(cryptoCurrency);
         if (available.compareTo(amount) < 0) {
@@ -45,6 +44,9 @@ public class SystemExchangeService {
         return cryptoCurrency;
     }
 
+    public CryptoCurrency getCryptoCurrencyBySymbol(String symbol) {
+        return cryptoCurrencyRepository.getCryptoCurrencyBySymbol(symbol);
+    }
 
     public String getAvailableCryptosAndMarketPrice() {
         StringBuilder sb = new StringBuilder();
@@ -52,7 +54,7 @@ public class SystemExchangeService {
             sb.append(entry.getKey().toString());
             sb.append("Price: ");
             sb.append(cryptosMarketPrice.get(entry.getKey()));
-            sb.append("Available: ");
+            sb.append("  Available: ");
             sb.append(entry.getValue());
             sb.append("\n");
         }
