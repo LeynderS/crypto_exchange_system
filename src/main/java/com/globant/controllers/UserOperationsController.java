@@ -25,6 +25,7 @@ class UserOperationsController {
         this.depositController = new DepositController(view, walletService);
         this.checkWalletController = new CheckWalletController(view, walletService);
         this.buyExchangeController = new BuyExchangeController(view, walletService, systemExchangeService);
+        systemExchangeService.setObserver(buyExchangeController);
         this.placeBuyOrderController = new PlaceBuyOrderController(view, userService, walletService, systemExchangeService);
         this.placeSellOrderController = new PlaceSellOrderController(view, userService, walletService, systemExchangeService);
         this.transactionController = new TransactionController(view, userService, transactionService);

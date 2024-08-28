@@ -87,6 +87,14 @@ public class ConsoleView {
         return scanner.nextLine();
     }
 
+    public Boolean getConfirmation(String message) {
+        System.out.println(message);
+        System.out.println("1. Yes");
+        System.out.println("2. No");
+        String choice = scanner.nextLine();
+        return choice.equals("1");
+    }
+
     public void showError(String errorMessage) {
         System.out.println(ANSI_RED + errorMessage + ANSI_RESET);
     }
