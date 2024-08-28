@@ -2,6 +2,7 @@ package com.globant.controllers;
 
 import com.globant.models.CryptoCurrency;
 import com.globant.exceptions.InsufficientFundsException;
+import com.globant.service.PriceObserver;
 import com.globant.service.SystemExchangeService;
 import com.globant.exceptions.UnknowCryptoCurrencyException;
 import com.globant.service.WalletService;
@@ -9,10 +10,11 @@ import com.globant.views.ConsoleView;
 
 import java.math.BigDecimal;
 
-class BuyExchangeController {
+class BuyExchangeController implements PriceObserver {
     private final ConsoleView view;
     private final SystemExchangeService systemExchangeService;
     private final WalletService walletService;
+    private Boolean priceHasChanged;
 
     public BuyExchangeController(ConsoleView view, WalletService walletService, SystemExchangeService systemExchangeService) {
         this.view = view;
@@ -20,11 +22,22 @@ class BuyExchangeController {
         this.systemExchangeService = systemExchangeService;
     }
     public void execute() {
+        priceHasChanged = false;
         view.showInfo(systemExchangeService.getAvailableCryptosAndMarketPrice());
         try{
             String symbol = view.getCryptoCurrencySymbol().toUpperCase();
             BigDecimal amount = view.getAmount("Enter the amount of Crypto:");
             systemExchangeService.sufficientCryptosInExchangeVal(symbol, amount);
+            if(priceHasChanged){
+                view.showInfo("Price has changed.");
+                view.showInfo(systemExchangeService.getAvailableCryptosAndMarketPrice());
+                Boolean confirm = view.getConfirmation("Do you want to continue with the purchase?");
+                if(!confirm){
+                    view.showInfo("Purchase cancelled.");
+                    priceHasChanged = false;
+                    return;
+                }
+            }
             walletService.withdrawFiat(systemExchangeService.getTotalPrice(symbol, amount));
             CryptoCurrency cryptoCurrency = systemExchangeService.buyCryptoCurrency(symbol, amount);
             walletService.depositCrypto(cryptoCurrency, amount);
@@ -34,5 +47,10 @@ class BuyExchangeController {
         }catch (InsufficientFundsException e){
             view.showError(e.getMessage());
         }
+    }
+
+    @Override
+    public void priceChanged() {
+        priceHasChanged = true;
     }
 }

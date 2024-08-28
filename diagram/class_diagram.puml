@@ -58,10 +58,13 @@ class SystemExchangeService{
 -CryptoCurrencyRepository cryptoCurrencyRepository
 -final Map<CryptoCurrency, BigDecimal> cryptosMarketPrice
 -final Map<CryptoCurrency, BigDecimal> cryptosAvailability
+-final ScheduledExecutorService priceFluctuationExecutor
 +sufficientCryptos(String symbol, BigDecimal amount)
 +getTotalPrice(String symbol, BigDecimal amount): BigDecimal
 +buyCryptoCurrency(String symbol, BigDecimal amount): CryptoCurrency
 +getAvailableCryptosAndMarketPrice(): BigDecimal
+-startPriceFluctuation()
+-priceFluctuation()
 }
 
 abstract class Order {
