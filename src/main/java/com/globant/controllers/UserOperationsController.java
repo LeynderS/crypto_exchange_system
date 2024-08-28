@@ -1,6 +1,7 @@
 package com.globant.controllers;
 
 import com.globant.service.SystemExchangeService;
+import com.globant.service.TransactionService;
 import com.globant.service.UserService;
 import com.globant.service.WalletService;
 import com.globant.views.ConsoleView;
@@ -14,8 +15,10 @@ class UserOperationsController {
     private BuyExchangeController buyExchangeController;
     private PlaceBuyOrderController placeBuyOrderController;
     private PlaceSellOrderController placeSellOrderController;
+    private TransactionController transactionController;
 
-    public UserOperationsController(ConsoleView view, UserService userService, SystemExchangeService systemExchangeService) {
+    public UserOperationsController(ConsoleView view, UserService userService,
+                                    SystemExchangeService systemExchangeService, TransactionService transactionService) {
         this.view = view;
         this.userService = userService;
         this.walletService = new WalletService();
@@ -24,6 +27,7 @@ class UserOperationsController {
         this.buyExchangeController = new BuyExchangeController(view, walletService, systemExchangeService);
         this.placeBuyOrderController = new PlaceBuyOrderController(view, userService, walletService, systemExchangeService);
         this.placeSellOrderController = new PlaceSellOrderController(view, userService, walletService, systemExchangeService);
+        this.transactionController = new TransactionController(view, userService, transactionService);
     }
 
     private void updateUserSession(){
@@ -54,7 +58,7 @@ class UserOperationsController {
                     view.showSuccessMessage("Checking Open Orders");
                     break;
                 case 7:
-                    view.showSuccessMessage("Checking Transaction History");
+                    transactionController.execute();
                     break;
                 case 8:
                     userService.logout();

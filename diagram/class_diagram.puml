@@ -82,6 +82,7 @@ class SellOrder{
 
 class OrderBook{
 -static OrderBook instance
+-TransactionService transactionService
 -List<Order> buyOrders
 -List<Order> sellOrders
 +static OrderBook getInstance()
@@ -89,18 +90,13 @@ class OrderBook{
 -matchOrders()
 -findMatchingOrders(): Order[]
 -ordersMatch(Order buyOrder, Order sellOrder): boolean
--processTransaction(Order buyOrder, Order sellOrder)
 -removeMatchedOrders(Order buyOrder, Order sellOrder)
 }
 
-
-interface TransactionRepository {
-void save(Transaction transaction)
-List<Transaction> getTransactionHistoryByUser(User user)
-}
-
-class InMemoryTransactionRepository {
-  -Map<String, List<Transaction>> transactions
+class TransactionRepository {
+-final Map<User, List<Transaction>> transactions
++save(User user, Transaction transaction)
++getTransactions(User user): List<Transaction>
 }
 
 class Transaction {
@@ -110,14 +106,13 @@ class Transaction {
 -BigDecimal price
 -TransactionType type
 -LocalDateTime timestamp
-+createTransaction()
-+viewTransactionHistory()
 }
 
 class TransactionService {
-  -List<Transaction> transactions
-  +createTransaction()
-  +getTransactionHistory(): List<Transaction>
+-final TransactionRepository transactionRepository
++saveTransaction(User user, CryptoCurrency cryptoCurrency, BigDecimal amount, BigDecimal price, TransactionType type)
++getTransactions(User user): List<Transaction>
+processTransaction(Order buyOrder, Order sellOrder)
 }
 
 
@@ -135,16 +130,17 @@ UserService "1" --> "1" InMemoryUserRepository : Uses
 InMemoryUserRepository "1" *-- "0..*" User : Stores
 User "1" *-- "1" Wallet : contains
 Wallet "1" <-- "1" WalletService : Uses
-CryptoCurrencyRepository --> CryptoCurrency : provides
-SystemExchangeService --> CryptoCurrencyRepository : uses
+Wallet "1" o-- "0..*" CryptoCurrency : Contains
+CryptoCurrencyRepository "1" --> "1..*" CryptoCurrency : provides
+SystemExchangeService "1 "--> "1" CryptoCurrencyRepository : uses
 Order <|-- BuyOrder
 Order <|-- SellOrder
 OrderBook "1" *-- "0..*" Order : contains
-
-TransactionRepository <|-- InMemoryTransactionRepository
-
-TransactionService "1" *-- "0..*" Transaction
-Transaction "1" *-- "1" CryptoCurrency
-
+OrderBook "1" --> "1" TransactionService : interacts with
+TransactionRepository "1" *-- "0..*" Transaction: contains
+TransactionService "1" --> "1" TransactionRepository : Uses
+Transaction "1" o-- "1" CryptoCurrency
+Order "1" --> "1" User : BelongsTo
+TransactionRepository "1" --> "0..*" User : manages
 
 @enduml

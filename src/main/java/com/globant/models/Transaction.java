@@ -2,6 +2,7 @@ package com.globant.models;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 
 public class Transaction {
@@ -21,4 +22,16 @@ public class Transaction {
         this.timestamp = LocalDateTime.now();
     }
 
+    @Override
+    public String toString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        StringBuilder sb = new StringBuilder().append("Transaction:\n")
+                .append("transactionId= ").append(transactionId)
+                .append("\ncryptoCurrency= ").append(cryptoCurrency)
+                .append("\namount=").append(amount)
+                .append("\nprice=").append(price)
+                .append("\ntype=").append(type)
+                .append("\ntimestamp=").append(timestamp.format(formatter));
+        return sb.toString();
+    }
 }
