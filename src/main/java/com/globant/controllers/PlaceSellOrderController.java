@@ -20,12 +20,13 @@ class PlaceSellOrderController {
     private final SystemExchangeService systemExchangeService;
     private final OrderBook orderBook;
 
-    public PlaceSellOrderController(ConsoleView view, UserService userService, WalletService walletService, SystemExchangeService systemExchangeService) {
+    public PlaceSellOrderController(ConsoleView view, UserService userService, WalletService walletService,
+                                    SystemExchangeService systemExchangeService, OrderBook orderBook){
         this.view = view;
         this.userService = userService;
         this.walletService = walletService;
         this.systemExchangeService = systemExchangeService;
-        this.orderBook = OrderBook.getInstance();
+        this.orderBook = orderBook;
     }
 
     public void execute(){

@@ -14,9 +14,9 @@ class CancelOrderController {
     private final OrderBook orderBook;
     private final UserService userService;
 
-    public CancelOrderController(ConsoleView view, UserService userService) {
+    public CancelOrderController(ConsoleView view, UserService userService, OrderBook orderBook){
         this.view = view;
-        this.orderBook = OrderBook.getInstance();
+        this.orderBook = orderBook;
         this.userService = userService;
     }
 

@@ -1,9 +1,6 @@
 package com.globant.controllers;
 
-import com.globant.service.SystemExchangeService;
-import com.globant.service.TransactionService;
-import com.globant.service.UserService;
-import com.globant.service.WalletService;
+import com.globant.service.*;
 import com.globant.views.ConsoleView;
 
 class UserOperationsController {
@@ -19,7 +16,8 @@ class UserOperationsController {
     private CancelOrderController cancelOrderController;
 
     public UserOperationsController(ConsoleView view, UserService userService,
-                                    SystemExchangeService systemExchangeService, TransactionService transactionService) {
+                                    SystemExchangeService systemExchangeService, TransactionService transactionService,
+                                    OrderBook orderBook){
         this.view = view;
         this.userService = userService;
         this.walletService = new WalletService();
@@ -27,10 +25,10 @@ class UserOperationsController {
         this.checkWalletController = new CheckWalletController(view, walletService);
         this.buyExchangeController = new BuyExchangeController(view, walletService, systemExchangeService);
         systemExchangeService.setObserver(buyExchangeController);
-        this.placeBuyOrderController = new PlaceBuyOrderController(view, userService, walletService, systemExchangeService);
-        this.placeSellOrderController = new PlaceSellOrderController(view, userService, walletService, systemExchangeService);
+        this.placeBuyOrderController = new PlaceBuyOrderController(view, userService, walletService, systemExchangeService, orderBook);
+        this.placeSellOrderController = new PlaceSellOrderController(view, userService, walletService, systemExchangeService, orderBook);
         this.transactionController = new TransactionController(view, userService, transactionService);
-        this.cancelOrderController = new CancelOrderController(view, userService);
+        this.cancelOrderController = new CancelOrderController(view, userService, orderBook);
     }
 
     private void updateUserSession(){

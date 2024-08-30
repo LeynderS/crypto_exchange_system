@@ -17,10 +17,10 @@ public class CryptoExchangeApp {
         TransactionRepository transactionRepository = new TransactionRepository();
         SystemExchangeService systemExchangeService = new SystemExchangeService(cryptoCurrencyRepository);
         TransactionService transactionService = new TransactionService(transactionRepository);
-        OrderBook.getInstance().setTransactionService(transactionService);
+        OrderBook orderBook = new OrderBook(transactionService);
         UserService userService = new UserService(userRepository);
         ConsoleView view = new ConsoleView();
-        RootController controller = new RootController(view, userService, systemExchangeService, transactionService);
+        RootController controller = new RootController(view, userService, systemExchangeService, transactionService, orderBook);
         controller.run();
         view.close();
 

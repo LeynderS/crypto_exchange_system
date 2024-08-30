@@ -12,14 +12,9 @@ public class OrderBook {
     private final List<Order> buyOrders = new ArrayList<>();
     private final List<Order> sellOrders = new ArrayList<>();
     private TransactionService transactionService;
-    private OrderBook() {
-    }
 
-    public static OrderBook getInstance() {
-        if (instance == null) {
-            instance = new OrderBook();
-        }
-        return instance;
+    public OrderBook(TransactionService transactionService) {
+        this.transactionService = transactionService;
     }
 
     public void addOrder(Order order) {
@@ -99,9 +94,5 @@ public class OrderBook {
     private void removeMatchedOrders(Order buyOrder, Order sellOrder){
         buyOrders.remove(buyOrder);
         sellOrders.remove(sellOrder);
-    }
-
-    public void setTransactionService(TransactionService transactionService) {
-        this.transactionService = transactionService;
     }
 }
