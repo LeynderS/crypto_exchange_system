@@ -2,6 +2,7 @@ package com.globant.models;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public abstract class Order {
     private String orderId;
@@ -19,12 +20,14 @@ public abstract class Order {
     }
     @Override
     public String toString() {
-        return "Order:" +
-                "\norderId= " + orderId +
-                "\nuser=" + user +
-                "\ncryptoCurrency=" + cryptoCurrency +
-                "\namount=" + amount +
-                "\ndate=" + date;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        StringBuilder sb = new StringBuilder().append("Order:\n")
+                .append("orderId= ").append(orderId)
+                .append("\nuser= ").append(user)
+                .append("\ncryptoCurrency= ").append(cryptoCurrency)
+                .append("\namount= ").append(amount)
+                .append("\ndate= ").append(date.format(formatter));
+        return sb.toString();
     }
 
     public User getUser() {
