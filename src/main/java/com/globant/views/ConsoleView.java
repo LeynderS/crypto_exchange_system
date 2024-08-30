@@ -54,7 +54,7 @@ public class ConsoleView {
         System.out.println("3. Buy Crypto From Exchange");
         System.out.println("4. Place Buy Order");
         System.out.println("5. Place Sell Order");
-        System.out.println("6. Check Open Orders");
+        System.out.println("6. Cancel Open Orders");
         System.out.println("7. Check Transaction History");
         System.out.println("8. Logout");
         String choice = scanner.nextLine();
@@ -93,6 +93,16 @@ public class ConsoleView {
         System.out.println("2. No");
         String choice = scanner.nextLine();
         return choice.equals("1");
+    }
+
+    public int getOrderNumber(){
+        System.out.println("Enter the order number to cancel:");
+        String choice = scanner.nextLine();
+        try {
+            return Integer.parseInt(choice);
+        } catch (NumberFormatException e) {
+            return INVALID_CHOICE;
+        }
     }
 
     public void showError(String errorMessage) {

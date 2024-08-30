@@ -1,5 +1,6 @@
 package com.globant.service;
 
+import com.globant.exceptions.UserNotFoundException;
 import com.globant.models.*;
 
 import java.math.BigDecimal;
@@ -28,6 +29,37 @@ public class OrderBook {
             sellOrders.add(order);
         }
         if(buyOrders.size() > 0 && sellOrders.size() > 0) matchOrders();
+    }
+
+    public List<Order> getUserOrders(User user){
+        List<Order> userOrders = new ArrayList<>();
+        for(Order order : buyOrders){
+            if(order.getUser().equals(user)){
+                userOrders.add(order);
+            }
+        }
+        for(Order order : sellOrders){
+            if(order.getUser().equals(user)){
+                userOrders.add(order);
+            }
+        }
+        if(userOrders.size() > 0){
+            return List.copyOf(userOrders);
+        }else{
+            throw new UserNotFoundException();
+        }
+    }
+
+    public void cancelUserOrder(User user, int orderIndex){
+        List<Order> userOrders = getUserOrders(user);
+        Order order = userOrders.get(orderIndex);
+        if(order instanceof BuyOrder){
+            order.getUser().getWallet().depositFiat(((BuyOrder) order).getMaxPrice());
+            buyOrders.remove(order);
+        }else if(order instanceof SellOrder){
+            order.getUser().getWallet().depositCrypto(order.getCryptoCurrency(), ((SellOrder) order).getMinPrice());
+            sellOrders.remove(order);
+        }
     }
 
     private void matchOrders(){

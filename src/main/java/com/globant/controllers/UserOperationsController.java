@@ -16,6 +16,7 @@ class UserOperationsController {
     private PlaceBuyOrderController placeBuyOrderController;
     private PlaceSellOrderController placeSellOrderController;
     private TransactionController transactionController;
+    private CancelOrderController cancelOrderController;
 
     public UserOperationsController(ConsoleView view, UserService userService,
                                     SystemExchangeService systemExchangeService, TransactionService transactionService) {
@@ -29,6 +30,7 @@ class UserOperationsController {
         this.placeBuyOrderController = new PlaceBuyOrderController(view, userService, walletService, systemExchangeService);
         this.placeSellOrderController = new PlaceSellOrderController(view, userService, walletService, systemExchangeService);
         this.transactionController = new TransactionController(view, userService, transactionService);
+        this.cancelOrderController = new CancelOrderController(view, userService);
     }
 
     private void updateUserSession(){
@@ -56,7 +58,7 @@ class UserOperationsController {
                     placeSellOrderController.execute();
                     break;
                 case 6:
-                    view.showSuccessMessage("Checking Open Orders");
+                    cancelOrderController.execute();
                     break;
                 case 7:
                     transactionController.execute();
