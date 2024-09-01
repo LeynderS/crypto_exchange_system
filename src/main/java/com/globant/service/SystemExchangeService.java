@@ -32,25 +32,21 @@ public class SystemExchangeService extends Observable {
         startPriceFluctuation();
     }
 
-    public void sufficientCryptosInExchangeVal(String symbol, BigDecimal amount) {
-        CryptoCurrency cryptoCurrency = cryptoCurrencyRepository.getCryptoCurrencyBySymbol(symbol);
+    public void sufficientCryptosInExchangeVal(CryptoCurrency cryptoCurrency, BigDecimal amount) {
         BigDecimal available = cryptosAvailability.get(cryptoCurrency);
         if (available.compareTo(amount) < 0) {
             throw new InsufficientFundsException("Insufficient crypto from exchange");
         }
     }
 
-    public BigDecimal getTotalPrice(String symbol, BigDecimal amount) {
-        CryptoCurrency cryptoCurrency = cryptoCurrencyRepository.getCryptoCurrencyBySymbol(symbol);
+    public BigDecimal getTotalPrice(CryptoCurrency cryptoCurrency, BigDecimal amount) {
         BigDecimal price = cryptosMarketPrice.get(cryptoCurrency);
         return price.multiply(amount);
     }
 
-    public CryptoCurrency buyCryptoCurrency(String symbol, BigDecimal amount) {
-        CryptoCurrency cryptoCurrency = cryptoCurrencyRepository.getCryptoCurrencyBySymbol(symbol);
+    public void buyCryptoCurrency(CryptoCurrency cryptoCurrency, BigDecimal amount) {
         BigDecimal available = cryptosAvailability.get(cryptoCurrency);
         cryptosAvailability.put(cryptoCurrency, available.subtract(amount));
-        return cryptoCurrency;
     }
 
     public CryptoCurrency getCryptoCurrencyBySymbol(String symbol) {

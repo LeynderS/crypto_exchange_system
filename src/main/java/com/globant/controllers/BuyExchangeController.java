@@ -29,8 +29,9 @@ class BuyExchangeController implements PriceObserver {
         view.showInfo(systemExchangeService.getAvailableCryptosAndMarketPrice());
         try{
             String symbol = view.getCryptoCurrencySymbol().toUpperCase();
+            CryptoCurrency cryptoCurrency = systemExchangeService.getCryptoCurrencyBySymbol(symbol);
             BigDecimal amount = view.getAmount("Enter the amount of Crypto:");
-            systemExchangeService.sufficientCryptosInExchangeVal(symbol, amount);
+            systemExchangeService.sufficientCryptosInExchangeVal(cryptoCurrency, amount);
             if(priceHasChanged){
                 view.showInfo("Price has changed.");
                 view.showInfo(systemExchangeService.getAvailableCryptosAndMarketPrice());
@@ -41,9 +42,9 @@ class BuyExchangeController implements PriceObserver {
                     return;
                 }
             }
-            walletService.withdrawFiat(userService.getCurrentUser().getWallet(),
-                    systemExchangeService.getTotalPrice(symbol, amount));
-            CryptoCurrency cryptoCurrency = systemExchangeService.buyCryptoCurrency(symbol, amount);
+            BigDecimal totalPrice = systemExchangeService.getTotalPrice(cryptoCurrency, amount);
+            walletService.withdrawFiat(userService.getCurrentUser().getWallet(), totalPrice);
+            systemExchangeService.buyCryptoCurrency(cryptoCurrency, amount);
             walletService.depositCrypto(userService.getCurrentUser().getWallet(), cryptoCurrency, amount);
             view.showSuccessMessage("Purchase successful");
         }catch (UnknowCryptoCurrencyException e){
