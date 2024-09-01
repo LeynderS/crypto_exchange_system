@@ -21,6 +21,7 @@ public class TransactionRepository {
     }
 
     public List<Transaction> getTransactions(User user) {
-        return Optional.ofNullable(transactions.get(user)).orElseThrow(NoTransactionsFoundException::new);
-    }
+        return Optional.ofNullable(transactions.get(user))
+                .map(List::copyOf).orElseThrow(NoTransactionsFoundException::new);
+}
 }

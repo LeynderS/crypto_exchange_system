@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrderBook {
-    private static OrderBook instance;
     private final List<Order> buyOrders = new ArrayList<>();
     private final List<Order> sellOrders = new ArrayList<>();
     private TransactionService transactionService;
