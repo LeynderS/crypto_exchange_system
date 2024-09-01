@@ -1,6 +1,6 @@
 package com.globant.repositories;
 
-import com.globant.exceptions.UnknowCryptoCurrencyException;
+import com.globant.exceptions.UnknownCryptoCurrencyException;
 import com.globant.models.CryptoCurrency;
 
 import java.util.HashMap;
@@ -16,7 +16,7 @@ public class CryptoCurrencyRepository {
     }
     public CryptoCurrency getCryptoCurrencyBySymbol(String symbol) {
         return Optional.ofNullable(cryptoCurrencies.get(symbol)).
-                orElseThrow(UnknowCryptoCurrencyException::new);
+                orElseThrow(UnknownCryptoCurrencyException::new);
     }
 
 }

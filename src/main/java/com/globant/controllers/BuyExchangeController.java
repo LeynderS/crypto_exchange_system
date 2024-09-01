@@ -4,7 +4,7 @@ import com.globant.models.CryptoCurrency;
 import com.globant.exceptions.InsufficientFundsException;
 import com.globant.service.PriceObserver;
 import com.globant.service.SystemExchangeService;
-import com.globant.exceptions.UnknowCryptoCurrencyException;
+import com.globant.exceptions.UnknownCryptoCurrencyException;
 import com.globant.service.UserService;
 import com.globant.service.WalletService;
 import com.globant.views.ConsoleView;
@@ -47,7 +47,7 @@ class BuyExchangeController implements PriceObserver {
             systemExchangeService.buyCryptoCurrency(cryptoCurrency, amount);
             walletService.depositCrypto(userService.getCurrentUser().getWallet(), cryptoCurrency, amount);
             view.showSuccessMessage("Purchase successful");
-        }catch (UnknowCryptoCurrencyException e){
+        }catch (UnknownCryptoCurrencyException e){
             view.showError("Unknown crypto currency. Please try again.");
         }catch (InsufficientFundsException e){
             view.showError(e.getMessage());

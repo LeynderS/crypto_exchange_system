@@ -1,7 +1,7 @@
 package com.globant.controllers;
 
 import com.globant.exceptions.InsufficientFundsException;
-import com.globant.exceptions.UnknowCryptoCurrencyException;
+import com.globant.exceptions.UnknownCryptoCurrencyException;
 import com.globant.models.BuyOrder;
 import com.globant.models.CryptoCurrency;
 import com.globant.service.OrderBook;
@@ -38,7 +38,7 @@ class PlaceBuyOrderController {
             walletService.withdrawFiat(userService.getCurrentUser().getWallet(), maxPrice);
             orderBook.addOrder(new BuyOrder(cryptoCurrency,amount,userService.getCurrentUser(),maxPrice));
             view.showInfo("Buy Order placed successfully");
-        }catch (UnknowCryptoCurrencyException e){
+        }catch (UnknownCryptoCurrencyException e){
             view.showError("Unknown crypto currency. Please try again.");
         }catch (InsufficientFundsException e){
             view.showError(e.getMessage());
