@@ -8,8 +8,10 @@ import java.util.List;
 
 public class TransactionService {
     private final TransactionRepository transactionRepository;
-    public TransactionService(TransactionRepository transactionRepository) {
+    private final WalletService walletService;
+    public TransactionService(TransactionRepository transactionRepository, WalletService walletService) {
         this.transactionRepository = transactionRepository;
+        this.walletService = walletService;
     }
 
     private void saveTransaction(User user, CryptoCurrency cryptoCurrency, BigDecimal amount,
@@ -28,9 +30,9 @@ public class TransactionService {
         BigDecimal minPrice = ((SellOrder) sellOrder).getMinPrice();
         User buyer = buyOrder.getUser();
         User seller = sellOrder.getUser();
-        buyer.getWallet().depositCrypto(cryptoCurrency, amount);
-        buyer.getWallet().depositFiat(maxPrice.subtract(minPrice));
-        seller.getWallet().depositFiat(minPrice);
+        walletService.depositCrypto(buyer.getWallet(), cryptoCurrency, amount);
+        walletService.depositFiat(buyer.getWallet(), maxPrice.subtract(minPrice));
+        walletService.depositFiat(seller.getWallet(), minPrice);
         saveTransaction(buyer, cryptoCurrency, amount, minPrice, TransactionType.BUY);
         saveTransaction(seller, cryptoCurrency, amount, minPrice, TransactionType.SELL);
     }

@@ -35,8 +35,7 @@ class PlaceBuyOrderController {
             CryptoCurrency cryptoCurrency = systemExchangeService.getCryptoCurrencyBySymbol(crypto);
             BigDecimal amount = view.getAmount("Enter the amount of Crypto:");
             BigDecimal maxPrice = view.getAmount("Enter the maximum price:");
-            walletService.fiatFoundsValidation(maxPrice);
-            walletService.withdrawFiat(maxPrice);
+            walletService.withdrawFiat(userService.getCurrentUser().getWallet(), maxPrice);
             orderBook.addOrder(new BuyOrder(cryptoCurrency,amount,userService.getCurrentUser(),maxPrice));
             view.showInfo("Buy Order placed successfully");
         }catch (UnknowCryptoCurrencyException e){

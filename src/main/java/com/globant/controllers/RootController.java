@@ -1,9 +1,6 @@
 package com.globant.controllers;
 
-import com.globant.service.OrderBook;
-import com.globant.service.SystemExchangeService;
-import com.globant.service.TransactionService;
-import com.globant.service.UserService;
+import com.globant.service.*;
 import com.globant.views.ConsoleView;
 
 public class RootController {
@@ -11,10 +8,10 @@ public class RootController {
     private AuthController authController;
     private UserOperationsController userOperationsController;
 
-    public RootController(ConsoleView view, UserService userService, SystemExchangeService systemExchangeService, TransactionService transactionService, OrderBook orderBook) {
+    public RootController(ConsoleView view, UserService userService, WalletService walletService, SystemExchangeService systemExchangeService, TransactionService transactionService, OrderBook orderBook) {
         this.userService = userService;
         this.authController = new AuthController(view, userService);
-        this.userOperationsController = new UserOperationsController(view, userService, systemExchangeService, transactionService, orderBook);
+        this.userOperationsController = new UserOperationsController(view, userService, walletService, systemExchangeService, transactionService, orderBook);
     }
 
     public void run() {

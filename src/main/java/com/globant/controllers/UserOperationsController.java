@@ -6,7 +6,6 @@ import com.globant.views.ConsoleView;
 class UserOperationsController {
     private final ConsoleView view;
     private final UserService userService;
-    private WalletService walletService;
     private DepositController depositController;
     private CheckWalletController checkWalletController;
     private BuyExchangeController buyExchangeController;
@@ -15,15 +14,14 @@ class UserOperationsController {
     private TransactionController transactionController;
     private CancelOrderController cancelOrderController;
 
-    public UserOperationsController(ConsoleView view, UserService userService,
+    public UserOperationsController(ConsoleView view, UserService userService, WalletService walletService,
                                     SystemExchangeService systemExchangeService, TransactionService transactionService,
                                     OrderBook orderBook){
         this.view = view;
         this.userService = userService;
-        this.walletService = new WalletService();
-        this.depositController = new DepositController(view, walletService);
-        this.checkWalletController = new CheckWalletController(view, walletService);
-        this.buyExchangeController = new BuyExchangeController(view, walletService, systemExchangeService);
+        this.depositController = new DepositController(view, userService, walletService);
+        this.checkWalletController = new CheckWalletController(view, userService, walletService);
+        this.buyExchangeController = new BuyExchangeController(view, userService, walletService, systemExchangeService);
         systemExchangeService.setObserver(buyExchangeController);
         this.placeBuyOrderController = new PlaceBuyOrderController(view, userService, walletService, systemExchangeService, orderBook);
         this.placeSellOrderController = new PlaceSellOrderController(view, userService, walletService, systemExchangeService, orderBook);
@@ -31,12 +29,7 @@ class UserOperationsController {
         this.cancelOrderController = new CancelOrderController(view, userService, orderBook);
     }
 
-    private void updateUserSession(){
-        walletService.setWallet(userService.getCurrentUser().getWallet());
-    }
-
     public void execute(){
-        updateUserSession();
         while(true){
             int choice = view.getUserOperationsChoice(userService.getCurrentUser().getName());
             switch (choice){

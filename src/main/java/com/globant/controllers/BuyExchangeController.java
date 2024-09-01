@@ -5,6 +5,7 @@ import com.globant.exceptions.InsufficientFundsException;
 import com.globant.service.PriceObserver;
 import com.globant.service.SystemExchangeService;
 import com.globant.exceptions.UnknowCryptoCurrencyException;
+import com.globant.service.UserService;
 import com.globant.service.WalletService;
 import com.globant.views.ConsoleView;
 
@@ -12,12 +13,14 @@ import java.math.BigDecimal;
 
 class BuyExchangeController implements PriceObserver {
     private final ConsoleView view;
+    private final UserService userService;
     private final SystemExchangeService systemExchangeService;
     private final WalletService walletService;
     private Boolean priceHasChanged;
 
-    public BuyExchangeController(ConsoleView view, WalletService walletService, SystemExchangeService systemExchangeService) {
+    public BuyExchangeController(ConsoleView view, UserService userService, WalletService walletService, SystemExchangeService systemExchangeService) {
         this.view = view;
+        this.userService = userService;
         this.walletService = walletService;
         this.systemExchangeService = systemExchangeService;
     }
@@ -38,9 +41,10 @@ class BuyExchangeController implements PriceObserver {
                     return;
                 }
             }
-            walletService.withdrawFiat(systemExchangeService.getTotalPrice(symbol, amount));
+            walletService.withdrawFiat(userService.getCurrentUser().getWallet(),
+                    systemExchangeService.getTotalPrice(symbol, amount));
             CryptoCurrency cryptoCurrency = systemExchangeService.buyCryptoCurrency(symbol, amount);
-            walletService.depositCrypto(cryptoCurrency, amount);
+            walletService.depositCrypto(userService.getCurrentUser().getWallet(), cryptoCurrency, amount);
             view.showSuccessMessage("Purchase successful");
         }catch (UnknowCryptoCurrencyException e){
             view.showError("Unknown crypto currency. Please try again.");
