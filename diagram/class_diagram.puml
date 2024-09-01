@@ -84,7 +84,6 @@ class SellOrder{
 }
 
 class OrderBook{
--static OrderBook instance
 -TransactionService transactionService
 -List<Order> buyOrders
 -List<Order> sellOrders

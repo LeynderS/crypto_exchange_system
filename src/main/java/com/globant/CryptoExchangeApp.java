@@ -4,10 +4,7 @@ import com.globant.controllers.RootController;
 import com.globant.repositories.CryptoCurrencyRepository;
 import com.globant.repositories.InMemoryUserRepository;
 import com.globant.repositories.TransactionRepository;
-import com.globant.service.OrderBook;
-import com.globant.service.SystemExchangeService;
-import com.globant.service.TransactionService;
-import com.globant.service.UserService;
+import com.globant.service.*;
 import com.globant.views.ConsoleView;
 
 public class CryptoExchangeApp {
@@ -15,12 +12,13 @@ public class CryptoExchangeApp {
         InMemoryUserRepository userRepository = new InMemoryUserRepository();
         CryptoCurrencyRepository cryptoCurrencyRepository = new CryptoCurrencyRepository();
         TransactionRepository transactionRepository = new TransactionRepository();
+        WalletService walletService = new WalletService();
         SystemExchangeService systemExchangeService = new SystemExchangeService(cryptoCurrencyRepository);
-        TransactionService transactionService = new TransactionService(transactionRepository);
+        TransactionService transactionService = new TransactionService(transactionRepository, walletService);
         OrderBook orderBook = new OrderBook(transactionService);
         UserService userService = new UserService(userRepository);
         ConsoleView view = new ConsoleView();
-        RootController controller = new RootController(view, userService, systemExchangeService, transactionService, orderBook);
+        RootController controller = new RootController(view, userService, walletService,systemExchangeService, transactionService, orderBook);
         controller.run();
         view.close();
 

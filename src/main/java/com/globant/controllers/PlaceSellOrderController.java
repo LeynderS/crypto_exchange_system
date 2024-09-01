@@ -35,8 +35,7 @@ class PlaceSellOrderController {
         try{
             CryptoCurrency cryptoCurrency = systemExchangeService.getCryptoCurrencyBySymbol(crypto);
             BigDecimal amount = view.getAmount("Enter the amount of Crypto:");
-            walletService.cryptosFoundsValidation(cryptoCurrency,amount);
-            walletService.withdrawCrypto(cryptoCurrency,amount);
+            walletService.withdrawCrypto(userService.getCurrentUser().getWallet(), cryptoCurrency,amount);
             BigDecimal minPrice = view.getAmount("Enter the minimum price:");
             orderBook.addOrder(new SellOrder(cryptoCurrency,amount,userService.getCurrentUser(),minPrice));
             view.showInfo("Sell Order placed successfully");
