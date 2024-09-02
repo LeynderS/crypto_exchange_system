@@ -26,18 +26,14 @@ class User {
 -String email
 -String password
 -Wallet wallet
-+getEmail(): String
-+getPassword(): String
-+getName(): String
 }
 
 class WalletService{
--Wallet wallet
-+depositFiat(BigDecimal amount)
-+withdrawFiat(BigDecimal amount)
-+depositCrypto(CryptoCurrency cryptoCurrency, BigDecimal amount)
-+withdrawCrypto(CryptoCurrency cryptoCurrency, BigDecimal amount)
-+viewBalance(): String
++depositFiat(Wallet wallet, BigDecimal amount)
++withdrawFiat(Wallet wallet, BigDecimal amount)
++depositCrypto(Wallet wallet, CryptoCurrency cryptoCurrency, BigDecimal amount)
++withdrawCrypto(Wallet wallet, CryptoCurrency cryptoCurrency, BigDecimal amount)
++viewBalance(Wallet wallet): String
 }
 
 class Wallet {
@@ -47,6 +43,8 @@ class Wallet {
 +withdrawFiat(BigDecimal amount)
 +depositCrypto(CryptoCurrency cryptoCurrency, BigDecimal amount)
 +withdrawCrypto(CryptoCurrency cryptoCurrency, BigDecimal amount)
+-fiatFoundsValidation(BigDecimal amount)
+-cryptosFoundsValidation(CryptoCurrency cryptoCurrency, BigDecimal amount)
 +viewBalance(): String
 }
 

@@ -37,13 +37,13 @@ public class Wallet {
         cryptoBalances.put(cryptoCurrency, cryptoBalances.get(cryptoCurrency).subtract(amount));
     }
 
-    public void fiatFoundsValidation(BigDecimal amount) {
+    private void fiatFoundsValidation(BigDecimal amount) {
         if(fiatBalance.compareTo(amount) < 0){
             throw new InsufficientFundsException("Insufficient funds in your wallet");
         }
     }
 
-    public void cryptosFoundsValidation(CryptoCurrency cryptoCurrency, BigDecimal amount) {
+    private void cryptosFoundsValidation(CryptoCurrency cryptoCurrency, BigDecimal amount) {
         if(!cryptoBalances.containsKey(cryptoCurrency) || cryptoBalances.get(cryptoCurrency).compareTo(amount) < 0){
             throw new InsufficientFundsException("Insufficient cryptos in your wallet");
         }
@@ -55,9 +55,13 @@ public class Wallet {
      */
     public String viewBalance() {
         StringBuilder balance = new StringBuilder("Fiat balance: ").append(fiatBalance).append("\nCrypto Balances:\n");
-        cryptoBalances.forEach((crypto, amount) ->
-                balance.append(crypto.toString()).append(": ").append(amount).append("\n")
-        );
+        if (cryptoBalances.isEmpty()) {
+            balance.append("No cryptos in your wallet yet\n");
+        }else{
+            cryptoBalances.forEach((crypto, amount) ->
+                    balance.append(crypto.toString()).append(": ").append(amount).append("\n")
+            );
+        }
         return balance.toString();
     }
 
