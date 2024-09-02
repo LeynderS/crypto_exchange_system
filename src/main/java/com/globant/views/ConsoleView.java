@@ -4,11 +4,14 @@ import java.math.BigDecimal;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**
+ * Class that handles the console view of the application.
+ */
 public class ConsoleView {
-    private static final String ANSI_RED = "\u001B[31m";
-    private static final String ANSI_RESET = "\u001B[0m";
-    private static final String ANSI_GREEN = "\u001B[32m";
-    private static final String ANSI_BLUE = "\u001B[34m";
+    private static final String ANSI_RED = "\u001B[31m"; // ANSI escape code for red color
+    private static final String ANSI_RESET = "\u001B[0m"; // ANSI escape code to reset color
+    private static final String ANSI_GREEN = "\u001B[32m"; // ANSI escape code for green color
+    private static final String ANSI_BLUE = "\u001B[34m"; // ANSI escape code for blue color
 
     private final Scanner scanner = new Scanner(System.in);
     private static final int INVALID_CHOICE = -1;
@@ -26,7 +29,6 @@ public class ConsoleView {
             return INVALID_CHOICE;
         }
     }
-
     public String getNameInput(){
         System.out.println("Enter your name:");
         return scanner.nextLine();

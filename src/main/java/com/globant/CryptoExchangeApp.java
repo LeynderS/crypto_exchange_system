@@ -7,6 +7,9 @@ import com.globant.repositories.TransactionRepository;
 import com.globant.service.*;
 import com.globant.views.ConsoleView;
 
+/**
+ * Main class of the application.
+ */
 public class CryptoExchangeApp {
     public static void main(String[] args) {
         InMemoryUserRepository userRepository = new InMemoryUserRepository();
@@ -19,7 +22,7 @@ public class CryptoExchangeApp {
         UserService userService = new UserService(userRepository);
         ConsoleView view = new ConsoleView();
         RootController controller = new RootController(view, userService, walletService,systemExchangeService, transactionService, orderBook);
-        controller.run();
+        controller.run(); // Run the application
         view.close();
 
     }
