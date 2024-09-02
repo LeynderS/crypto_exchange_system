@@ -94,6 +94,7 @@ public class SystemExchangeService extends Observable {
             sb.append(entry.getKey().toString());
             sb.append("Price: ");
             sb.append(cryptosMarketPrice.get(entry.getKey()));
+            sb.append(" $");
             sb.append("  Available: ");
             sb.append(entry.getValue());
             sb.append("\n");

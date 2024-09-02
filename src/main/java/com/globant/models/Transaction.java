@@ -28,10 +28,10 @@ public class Transaction {
         StringBuilder sb = new StringBuilder().append("Transaction:\n")
                 .append("transactionId= ").append(transactionId)
                 .append("\ncryptoCurrency= ").append(cryptoCurrency)
-                .append("\namount=").append(amount)
-                .append("\nprice=").append(price)
-                .append("\ntype=").append(type)
-                .append("\ntimestamp=").append(timestamp.format(formatter));
+                .append("\namount= ").append(amount)
+                .append("\nprice= ").append(price).append(" $")
+                .append("\ntype= ").append(type)
+                .append("\ntimestamp= ").append(timestamp.format(formatter));
         return sb.toString();
     }
 }

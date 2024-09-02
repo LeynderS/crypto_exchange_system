@@ -15,6 +15,6 @@ public class BuyOrder extends Order{
     }
     @Override
     public String toString() {
-        return super.toString() + "\nmaxPrice=" + maxPrice;
+        return super.toString() + "\nmaxPrice= " + maxPrice + " $";
     }
 }

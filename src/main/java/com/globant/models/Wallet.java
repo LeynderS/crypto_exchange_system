@@ -54,7 +54,8 @@ public class Wallet {
      * @return a string with the balance of the wallet
      */
     public String viewBalance() {
-        StringBuilder balance = new StringBuilder("Fiat balance: ").append(fiatBalance).append("\nCrypto Balances:\n");
+        StringBuilder balance = new StringBuilder("Fiat balance: ").append(fiatBalance)
+                .append(" $").append("\nCrypto Balances:\n");
         if (cryptoBalances.isEmpty()) {
             balance.append("No cryptos in your wallet yet\n");
         }else{

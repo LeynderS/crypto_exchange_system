@@ -14,7 +14,7 @@ public class SellOrder extends Order{
     }
     @Override
     public String toString() {
-        return super.toString() + "\nminPrice=" + minPrice;
+        return super.toString() + "\nminPrice= " + minPrice + " $";
     }
 
 }

@@ -18,8 +18,6 @@ public class UserService {
     private User currentUser;
     public UserService(InMemoryUserRepository userRepository) {
         this.userRepository = userRepository;
-        userRepository.save(new User("leynder", "leynder@gmail.com", "leynder"));
-        userRepository.save(new User("as", "as@gmail.com", "as"));
         currentUser = null;
     }
 
