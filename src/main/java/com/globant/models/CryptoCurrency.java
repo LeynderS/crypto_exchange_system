@@ -1,6 +1,5 @@
 package com.globant.models;
 
-import java.math.BigDecimal;
 
 public class CryptoCurrency {
     String symbol;

@@ -7,7 +7,11 @@ import java.util.Optional;
 import com.globant.exceptions.UserNotFoundException;
 import com.globant.models.User;
 
+/**
+ * In-memory repository for users
+ */
 public class InMemoryUserRepository {
+    // Map to store users by email
     private final Map<String, User> users = new HashMap<>();
 
     /**
