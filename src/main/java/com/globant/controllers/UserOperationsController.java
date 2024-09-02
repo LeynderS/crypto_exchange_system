@@ -3,16 +3,19 @@ package com.globant.controllers;
 import com.globant.service.*;
 import com.globant.views.ConsoleView;
 
+/**
+ * This class is responsible for handling the user operations.
+ */
 class UserOperationsController {
     private final ConsoleView view;
     private final UserService userService;
-    private DepositController depositController;
-    private CheckWalletController checkWalletController;
-    private BuyExchangeController buyExchangeController;
-    private PlaceBuyOrderController placeBuyOrderController;
-    private PlaceSellOrderController placeSellOrderController;
-    private TransactionController transactionController;
-    private CancelOrderController cancelOrderController;
+    private final DepositController depositController;
+    private final CheckWalletController checkWalletController;
+    private final BuyExchangeController buyExchangeController;
+    private final PlaceBuyOrderController placeBuyOrderController;
+    private final PlaceSellOrderController placeSellOrderController;
+    private final TransactionController transactionController;
+    private final CancelOrderController cancelOrderController;
 
     public UserOperationsController(ConsoleView view, UserService userService, WalletService walletService,
                                     SystemExchangeService systemExchangeService, TransactionService transactionService,
@@ -22,7 +25,7 @@ class UserOperationsController {
         this.depositController = new DepositController(view, userService, walletService);
         this.checkWalletController = new CheckWalletController(view, userService, walletService);
         this.buyExchangeController = new BuyExchangeController(view, userService, walletService, systemExchangeService);
-        systemExchangeService.setObserver(buyExchangeController);
+        systemExchangeService.setObserver(buyExchangeController); // Setting the buyExchangeController as observer of the PriceFluctuation in the SystemExchangeService
         this.placeBuyOrderController = new PlaceBuyOrderController(view, userService, walletService, systemExchangeService, orderBook);
         this.placeSellOrderController = new PlaceSellOrderController(view, userService, walletService, systemExchangeService, orderBook);
         this.transactionController = new TransactionController(view, userService, transactionService);
@@ -49,6 +52,7 @@ class UserOperationsController {
                     placeSellOrderController.execute();
                     break;
                 case 6:
+                    // An extra feature to cancel a pending order
                     cancelOrderController.execute();
                     break;
                 case 7:

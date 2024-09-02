@@ -4,8 +4,9 @@ import com.globant.service.UserService;
 import com.globant.service.WalletService;
 import com.globant.views.ConsoleView;
 
-import java.math.BigDecimal;
-
+/**
+ * Controller class to check the wallet balance
+ */
 class CheckWalletController {
     private final ConsoleView view;
     private final UserService userService;
@@ -17,6 +18,7 @@ class CheckWalletController {
     }
 
     public void execute(){
+        // Show the balance of the current user
         view.showInfo(walletService.viewBalance(userService.getCurrentUser().getWallet()));
     }
 }

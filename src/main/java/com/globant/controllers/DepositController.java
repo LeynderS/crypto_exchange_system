@@ -6,6 +6,10 @@ import com.globant.views.ConsoleView;
 
 import java.math.BigDecimal;
 
+/**
+ * DepositController class that allows
+ * the user to deposit money into their wallet.
+ */
 class DepositController {
     private final ConsoleView view;
     private final UserService userService;
