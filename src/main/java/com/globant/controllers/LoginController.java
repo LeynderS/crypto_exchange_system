@@ -4,6 +4,10 @@ import com.globant.exceptions.InvalidCredentialsException;
 import com.globant.exceptions.InvalidEmailException;
 import com.globant.service.UserService;
 import com.globant.views.ConsoleView;
+
+/**
+ * LoginController class is responsible for handling the login process.
+ */
  class LoginController {
     private final ConsoleView view;
     private final UserService userService;
@@ -17,7 +21,7 @@ import com.globant.views.ConsoleView;
         while(true){
             try{
                 String email = view.getEmailInput();
-                userService.validateEmail(email);
+                userService.validateEmail(email); // Validate a correct email format
                 String password = view.getPasswordInput();
                 userService.login(email, password);
                 view.showSuccessMessage("Login successful");

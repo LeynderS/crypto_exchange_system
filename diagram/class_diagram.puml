@@ -49,6 +49,7 @@ class Wallet {
 }
 
 class CryptoCurrencyRepository{
+-final Map<String, CryptoCurrency> cryptoCurrencies
 getCryptoCurrencyBySymbol(String symbol): CryptoCurrency
 }
 
@@ -56,11 +57,13 @@ class SystemExchangeService{
 -CryptoCurrencyRepository cryptoCurrencyRepository
 -final Map<CryptoCurrency, BigDecimal> cryptosMarketPrice
 -final Map<CryptoCurrency, BigDecimal> cryptosAvailability
+-PriceObserver observer
 -final ScheduledExecutorService priceFluctuationExecutor
-+sufficientCryptos(String symbol, BigDecimal amount)
-+getTotalPrice(String symbol, BigDecimal amount): BigDecimal
-+buyCryptoCurrency(String symbol, BigDecimal amount): CryptoCurrency
-+getAvailableCryptosAndMarketPrice(): BigDecimal
++sufficientCryptosInExchange(CryptoCurrency cryptoCurrency, BigDecimal amount)
++getTotalPrice(CryptoCurrency cryptoCurrency, BigDecimal amount): BigDecimal
++buyCryptoCurrency(CryptoCurrency cryptoCurrency, BigDecimal amount)
++getCryptoCurrencyBySymbol(String symbol): CryptoCurrency
++getAvailableCryptosAndMarketPrice(): String
 -startPriceFluctuation()
 -priceFluctuation()
 }
@@ -85,8 +88,9 @@ class OrderBook{
 -TransactionService transactionService
 -List<Order> buyOrders
 -List<Order> sellOrders
-+static OrderBook getInstance()
 +addOrder(Order order)
++getUserOrders(User user): List<Order>
++cancelUserOrder(User user, String orderIndex)
 -matchOrders()
 -findMatchingOrders(): Order[]
 -ordersMatch(Order buyOrder, Order sellOrder): boolean
@@ -110,9 +114,10 @@ class Transaction {
 
 class TransactionService {
 -final TransactionRepository transactionRepository
-+saveTransaction(User user, CryptoCurrency cryptoCurrency, BigDecimal amount, BigDecimal price, TransactionType type)
+-final WalletService walletService
+-saveTransaction(User user, CryptoCurrency cryptoCurrency, BigDecimal amount, BigDecimal price, TransactionType type)
 +getTransactions(User user): List<Transaction>
-processTransaction(Order buyOrder, Order sellOrder)
+~processTransaction(Order buyOrder, Order sellOrder)
 }
 
 

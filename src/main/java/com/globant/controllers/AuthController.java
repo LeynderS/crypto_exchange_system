@@ -3,7 +3,10 @@ package com.globant.controllers;
 import com.globant.views.ConsoleView;
 import com.globant.service.UserService;
 
-
+/**
+ * The AuthController class handles user authentication and registration operations.
+ * It provides methods to execute user login, registration, or exit the application.
+ */
  class AuthController {
     private final ConsoleView view;
     private final RegisterController registerController;
@@ -15,6 +18,10 @@ import com.globant.service.UserService;
         this.loginController = new LoginController(view, userService);
     }
 
+    /**
+     * Executes the authentication process based on user input.
+     * It allows users to either log in, register, or exit the application.
+     */
     public void execute(){
         int choice = view.getChoice();
         switch (choice){

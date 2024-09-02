@@ -3,6 +3,10 @@ package com.globant.controllers;
 import com.globant.service.*;
 import com.globant.views.ConsoleView;
 
+/**
+ * RootController class is the main controller of the application.
+ * It is responsible for handling the user's input and
+ */
 public class RootController {
     private final UserService userService;
     private AuthController authController;
@@ -16,6 +20,8 @@ public class RootController {
 
     public void run() {
         while (true) {
+            // If the user is logged in, the userOperationsController is executed
+            // otherwise the authController is executed
             if (userService.isLoggedIn()) {
                 userOperationsController.execute();
             } else {

@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 
 public class UserService {
     private final InMemoryUserRepository userRepository;
+    // Email regex pattern to validate email format
     private static final String EMAIL_REGEX = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
     private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
 
@@ -22,12 +23,23 @@ public class UserService {
         currentUser = null;
     }
 
+    /**
+     * Registers a new user
+     * @param name the name of the user
+     * @param email the email of the user
+     * @param password the password of the user
+     */
     public void registerUser(String name, String email, String password) {
         User user = new User(name, email, password);
         currentUser = user;
         userRepository.save(user);
     }
 
+    /**
+     * Logs in a user
+     * @param email the email of the user
+     * @param password the password of the user
+     */
     public void login(String email, String password) {
         try{
             User user = userRepository.getUserByEmail(email);
@@ -38,6 +50,7 @@ public class UserService {
         }
     }
 
+    // Logout the current user
     public void logout(){
         if (currentUser != null) currentUser = null;
     }
@@ -52,6 +65,10 @@ public class UserService {
         }
     }
 
+    /**
+     * Checks if the email is already in use
+     * @param email the email to check
+     */
     public void emailInUse(String email){
         try{
             userRepository.getUserByEmail(email);
@@ -64,6 +81,10 @@ public class UserService {
         return currentUser;
     }
 
+    /**
+     * Checks if a user is logged in
+     * @return true if a user is logged in, false otherwise
+     */
     public boolean isLoggedIn(){
         return currentUser != null;
     }
