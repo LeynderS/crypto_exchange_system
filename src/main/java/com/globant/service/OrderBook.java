@@ -10,7 +10,7 @@ import java.util.List;
 public class OrderBook {
     private final List<Order> buyOrders = new ArrayList<>();
     private final List<Order> sellOrders = new ArrayList<>();
-    private TransactionService transactionService;
+    private final TransactionService transactionService;
 
     public OrderBook(TransactionService transactionService) {
         this.transactionService = transactionService;
