@@ -35,7 +35,7 @@ class CancelOrderController {
             }
             view.showInfo(formattedOrders.toString());
             int index = view.getOrderNumber(); // Get the order number to cancel
-            if (index > userOrders.size()){
+            if (index > userOrders.size() || index < 1){
                 view.showError("Invalid order number.");
                 return;
             }
